@@ -31,6 +31,10 @@ build/sum_scalar 3000000 4
 
 Your task is to identify the regions of the code that suffer from false-sharing in caches and optimize the program to reduce the number of cache misses. To do this, you can use a tool like Perf to identify the specific regions of the code that are affected by false-sharing. Once you have identified these regions, you can apply the necessary optimizations to reduce the number of cache misses and improve the program's performance. **Write your solution in the sum_scalar_solution.c file**.
 
+## Solution and Answers
+
+Can be found at [SOLUTION.md](SOLUTION.md).
+
 ## Acknowledgement
 
 This lab is a modified version of a lab made by Luís Felipe Mattos and Guido Araújo.

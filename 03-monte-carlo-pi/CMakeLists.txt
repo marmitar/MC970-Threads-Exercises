@@ -53,15 +53,20 @@ target_compile_definitions(monte_carlo_serial PRIVATE SERIAL_VERSION)
 add_executable(monte_carlo_parallel src/monte_carlo_parallel.cpp)
 target_compile_definitions(monte_carlo_parallel PRIVATE PARALLEL_VERSION)
 
+# Add optimized parallel version
+add_executable(monte_carlo_optimized src/monte_carlo_optimized.cpp)
+target_compile_definitions(monte_carlo_optimized PRIVATE PARALLEL_VERSION)
+
 # Link with Threads library
 target_link_libraries(monte_carlo_parallel PRIVATE Threads::Threads)
+target_link_libraries(monte_carlo_optimized PRIVATE Threads::Threads)
 
 
 if (EMIT_OPTIMIZATION_REPORTS)
     # Copy the optimization reports to the build directory
     add_custom_target(monte_carlo_pi_report ALL
         cp CMakeFiles/*.dir/src/*.opt.yaml .
-        DEPENDS monte_carlo_serial monte_carlo_parallel
+        DEPENDS monte_carlo_serial monte_carlo_parallel monte_carlo_optimized
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
     )
 endif()

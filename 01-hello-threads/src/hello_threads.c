@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#define NUM_THREADS 5
 
 // Print hello world from a thread
 static void *printHello(void *threadId) {

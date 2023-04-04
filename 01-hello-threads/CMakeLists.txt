@@ -38,6 +38,10 @@ if (EMIT_OPTIMIZATION_REPORTS)
     add_compile_options(-Rpass=.* -Rpass-analysis=.* -Rpass-missed=.* -fsave-optimization-record)
 endif()
 
+# Set number of threads for the solution
+set(NUM_THREADS "5" CACHE STRING "Number of threads in concurrent program")
+add_compile_definitions(NUM_THREADS=${NUM_THREADS})
+
 # Find Threads library
 set(THREADS_PREFER_PTHREAD_FLAG TRUE)
 find_package(Threads REQUIRED)

@@ -13,3 +13,7 @@ CMakeCache.txt
 CMakeFiles/
 Makefile
 cmake_install.cmake
+
+# Ignore data output
+mandelbrot-*.ppm
+bench/*.csv

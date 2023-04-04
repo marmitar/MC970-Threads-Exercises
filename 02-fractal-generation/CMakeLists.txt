@@ -6,7 +6,10 @@ if (NOT CMAKE_BUILD_TYPE OR CMAKE_BUILD_TYPE STREQUAL "")
     set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Build Configuration" FORCE)
 endif()
 
+# Set C++ standard to C++11
 set(CMAKE_CXX_STANDARD 11)
+
+# Set compiler flags
 add_compile_options(-m64 -fPIC)
 
 # Enable Link Time Optimizations
@@ -38,14 +41,17 @@ if (EMIT_OPTIMIZATION_REPORTS)
     add_compile_options(-Rpass=.* -Rpass-analysis=.* -Rpass-missed=.* -fsave-optimization-record)
 endif()
 
-set(APP_NAME mandelbrot)
+# Find Threads library and libm
+find_package(Threads REQUIRED)
+find_library(Math m REQUIRED)
+
+# Create executable
+add_executable(${PROJECT_NAME})
+
+# Add sources to executable
 set(OBJDIR src)
-
-add_executable(${APP_NAME} "")
-
-target_include_directories(${APP_NAME} PRIVATE ${OBJDIR})
-
-target_sources(${APP_NAME}
+target_include_directories(${PROJECT_NAME} PRIVATE ${OBJDIR})
+target_sources(${PROJECT_NAME}
     PRIVATE
         ${OBJDIR}/main.cpp
         ${OBJDIR}/mandelbrotSerial.cpp
@@ -53,7 +59,8 @@ target_sources(${APP_NAME}
         ${OBJDIR}/ppm.cpp
 )
 
-target_link_libraries(${APP_NAME} PRIVATE pthread m)
+# Link Threads and math library
+target_link_libraries(${PROJECT_NAME} PRIVATE Threads::Threads ${Math})
 
 
 if (EMIT_OPTIMIZATION_REPORTS)

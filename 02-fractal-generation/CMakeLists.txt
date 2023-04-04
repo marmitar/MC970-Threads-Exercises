@@ -9,6 +9,10 @@ endif()
 set(CMAKE_CXX_STANDARD 11)
 add_compile_options(-m64 -fPIC)
 
+# Enable Link Time Optimizations
+set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_RELEASE TRUE CACHE BOOL "Enable LTO in Release")
+set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_RELWITHDEBINFO TRUE CACHE BOOL "Enable LTO in RelWithDebInfo")
+
 # 1 if the GCC is the current compiler
 set(GCC $<CXX_COMPILER_ID:GNU>)
 # Set compiler warnings

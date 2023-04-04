@@ -41,6 +41,10 @@ To help answer this question, create a sheet to measure the time it takes to exe
 
 Note that you only need to add code to the `workerThreadStart()` function.
 
+## Solution and Answers
+
+Can be found at [SOLUTION.md](SOLUTION.md).
+
 ## Acknowledgment
 
 This assiginemnt uses code and ideas from the [Stanford CS149](https://github.com/stanford-cs149/asst1) and from an Intel example code.

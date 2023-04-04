@@ -28,6 +28,7 @@ To complete these exercises, you will need a basic understanding of threads prog
 Solutions were made and tested in the hardware described in [MACHINE.md](MACHINE.md). The specific solutions can be found at:
 
 1. [Hello Threads](01-hello-threads/SOLUTION.md).
+2. [Fractal Generation](02-fractal-generation/SOLUTION.md).
 
 ## Contributing
 

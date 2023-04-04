@@ -37,3 +37,7 @@ Try to answer the following questions:
 2. What can the function `pthread_create(...)` return? Why?
 3. What is the `pthread_join(...)` function for?
 4. In what order are the threads executed?
+
+## Solution and Answers
+
+Can be found at [SOLUTION.md](SOLUTION.md).

@@ -25,7 +25,9 @@ To complete these exercises, you will need a basic understanding of threads prog
 
 ## Solutions and Answers
 
-Solutions were made and tested in the hardware described in [MACHINE.md](MACHINE.md).
+Solutions were made and tested in the hardware described in [MACHINE.md](MACHINE.md). The specific solutions can be found at:
+
+1. [Hello Threads](01-hello-threads/SOLUTION.md).
 
 ## Contributing
 

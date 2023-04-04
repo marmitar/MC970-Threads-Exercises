@@ -61,13 +61,30 @@ int main(int argc, char **argv) {
     return 0;
 }
 
+#ifdef __clang__
+// clang currently don't have the NOIPA attribute, so we must disable
+// any kind of optimizations with OPTNONE and NOINLINE
+#define _disable_optimizations \
+    __attribute__((noinline, optnone))
+#else
+// GCC has NOIPA, so only the function call may not be optimized
+#define _disable_optimizations \
+    __attribute__((noipa))
+#endif
+
+static _disable_optimizations
+/** The step for the `sum` function, disabling loop optimizations. */
+unsigned long step(void) {
+    return 2;
+}
+
 void *sum(void *p) {
     unsigned long myid = *(unsigned long *) p;
     unsigned long start = (myid * n) / numthreads;
     unsigned long end = ((myid + 1) * n) / numthreads;
 
     for (unsigned long i = start; i < end; i++) {
-        psum[myid] += 2;
+        psum[myid] += step();
     }
 
     int rv = pthread_mutex_lock(&mutex);

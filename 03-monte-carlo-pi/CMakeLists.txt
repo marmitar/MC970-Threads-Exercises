@@ -38,6 +38,10 @@ if (EMIT_OPTIMIZATION_REPORTS)
     add_compile_options(-Rpass=.* -Rpass-analysis=.* -Rpass-missed=.* -fsave-optimization-record)
 endif()
 
+# Set number of threads for the solution
+set(NUM_THREADS "4" CACHE STRING "Number of threads in concurrent program")
+add_compile_definitions(NUM_THREADS=${NUM_THREADS})
+
 # Find Threads library
 find_package(Threads REQUIRED)
 
@@ -50,7 +54,7 @@ add_executable(monte_carlo_parallel src/monte_carlo_parallel.cpp)
 target_compile_definitions(monte_carlo_parallel PRIVATE PARALLEL_VERSION)
 
 # Link with Threads library
-target_link_libraries(monte_carlo_parallel Threads::Threads)
+target_link_libraries(monte_carlo_parallel PRIVATE Threads::Threads)
 
 
 if (EMIT_OPTIMIZATION_REPORTS)

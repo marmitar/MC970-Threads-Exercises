@@ -34,10 +34,9 @@ int main() {
 
     int count = 0;
     int n_points = 0;
-    int num_threads = 4; // set to get same result as parallel version
 
-    for (int i = 0; i < num_threads; ++i) {
-        calculate_pi(count, n_points, num_iterations / num_threads);
+    for (int i = 0; i < NUM_THREADS; ++i) {
+        calculate_pi(count, n_points, num_iterations / NUM_THREADS);
     }
 
     std::cout << "count: " << count << " of " << n_points << std::endl;

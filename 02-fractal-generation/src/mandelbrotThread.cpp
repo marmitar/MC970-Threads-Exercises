@@ -51,8 +51,7 @@ void mandelbrotThread(
 {
     static constexpr int MAX_THREADS = 32;
 
-    if (numThreads > MAX_THREADS)
-    {
+    if (numThreads < 1 || numThreads > MAX_THREADS) {
         fprintf(stderr, "Error: Max allowed threads is %d\n", MAX_THREADS);
         exit(1);
     }
@@ -75,7 +74,7 @@ void mandelbrotThread(
         args[i].maxIterations = maxIterations;
         args[i].numThreads = numThreads;
         args[i].output = output;
-      
+
         args[i].threadId = i;
     }
 
@@ -85,7 +84,7 @@ void mandelbrotThread(
     for (int i=1; i<numThreads; i++) {
         workers[i] = std::thread(workerThreadStart, &args[i]);
     }
-    
+
     workerThreadStart(&args[0]);
 
     // join worker threads
@@ -93,4 +92,3 @@ void mandelbrotThread(
         workers[i].join();
     }
 }
-

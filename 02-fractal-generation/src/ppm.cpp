@@ -9,6 +9,10 @@ void
 writePPMImage(int* data, int width, int height, const char *filename, int maxIterations)
 {
     FILE *fp = fopen(filename, "wb");
+    if (fp == NULL) {
+        perror(filename);
+        exit(EXIT_FAILURE);
+    }
 
     // write ppm header
     fprintf(fp, "P6\n");
@@ -22,8 +26,7 @@ writePPMImage(int* data, int width, int height, const char *filename, int maxIte
         // increase brightness of low iteration count
         // pixels. a.k.a. Make things look cooler.
 
-        float mapped = pow( std::min(static_cast<float>(maxIterations),
-                                     static_cast<float>(data[i])) / 256.f, .5f);
+        float mapped = pow(static_cast<float>(data[i]) / static_cast<float>(maxIterations), .5f);
 
         // convert back into 0-255 range, 8-bit channels
         unsigned char result = static_cast<unsigned char>(255.f * mapped);

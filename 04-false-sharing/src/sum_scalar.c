@@ -17,7 +17,7 @@ unsigned long int psum[MAXTHREADS]; // partial sum computed by each thread
 unsigned long int sumtotal = 0;
 unsigned long int n;
 unsigned long numthreads;
-pthread_mutex_t mutex;
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
 int main(int argc, char **argv) {
     struct timeval start, end;
@@ -31,12 +31,20 @@ int main(int argc, char **argv) {
     n = strtoul(argv[1], NULL, 10);
     numthreads = strtoul(argv[2], NULL, 10);
 
+    if (numthreads < 1 || numthreads > MAXTHREADS) {
+        fprintf(stderr, "Invalid number of threads: %lu\n", numthreads);
+        return EXIT_FAILURE;
+    }
+
     pthread_t tid[MAXTHREADS];
     unsigned long myid[MAXTHREADS];
     for (unsigned long i = 0; i < numthreads; i++) {
         myid[i] = i;
         psum[i] = 0L;
-        pthread_create(&tid[i], NULL, sum, &myid[i]);
+        int rv = pthread_create(&tid[i], NULL, sum, &myid[i]);
+        if (rv != 0) {
+            return EXIT_FAILURE;
+        }
     }
 
     for (unsigned long i = 0; i < numthreads; i++) {
@@ -62,9 +70,10 @@ void *sum(void *p) {
         psum[myid] += 2;
     }
 
-    pthread_mutex_lock(&mutex);
-    sumtotal += psum[myid];
-    pthread_mutex_unlock(&mutex);
-
+    int rv = pthread_mutex_lock(&mutex);
+    if (rv == 0) {
+        sumtotal += psum[myid];
+        pthread_mutex_unlock(&mutex);
+    }
     return NULL;
 }

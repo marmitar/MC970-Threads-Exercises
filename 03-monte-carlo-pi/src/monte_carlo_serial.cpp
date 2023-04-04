@@ -3,15 +3,14 @@
 #include <sstream>
 
 // Function to generate random numbers between -1 and 1
-double random_number() {
-    static std::random_device rd;
-    static std::mt19937 gen(rd());
+static double random_number() {
+    static std::mt19937 gen(std::random_device {} ());
     static std::uniform_real_distribution<double> dis(-1.0, 1.0);
     return dis(gen);
 }
 
 // Function to estimate pi using the Monte Carlo method
-void calculate_pi(int &count, int &n_points, int num_iterations) {
+static void calculate_pi(int &count, int &n_points, int num_iterations) {
     int hits = 0;
     for (int i = 0; i < num_iterations; ++i) {
         n_points++; // count every try

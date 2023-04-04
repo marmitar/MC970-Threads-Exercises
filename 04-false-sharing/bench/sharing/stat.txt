@@ -1,0 +1,6 @@
+
+ Performance counter stats for '/usr/bin/perf stat -e cache-misses -a record -o sharing/stat.data ../build/sum_scalar 300000000 8':
+
+           131.084      cache-misses
+
+       0,561613819 seconds time elapsed

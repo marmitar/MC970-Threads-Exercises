@@ -1,8 +1,24 @@
-cmake_minimum_required(VERSION 3.5)
-project(monte_carlo_pi)
+cmake_minimum_required(VERSION 3.12)
+project(monte_carlo_pi CXX)
 
 # Set C++ standard to C++11
 set(CMAKE_CXX_STANDARD 11)
+
+# 1 if the GCC is the current compiler
+set(GCC $<CXX_COMPILER_ID:GNU>)
+# Set compiler warnings
+add_compile_options(
+    -Wall -Wextra -Wpedantic
+    # String and formatting
+    -Wformat=2 $<${GCC}:-Wformat-truncation=2> $<${GCC}:-Wformat-overflow=2> $<${GCC}:-Wstringop-overflow=4>
+    # Implicit casts
+    -Wconversion -Wsign-conversion $<${GCC}:-Wformat-signedness>
+    # Variadic macros should not be empty, but most compiler accept it anyway,
+    # so it is okay to disable this warning
+    -Wno-gnu-zero-variadic-macro-arguments
+)
+add_compile_definitions($<$<CONFIG:Release>:_FORTIFY_SOURCE=1>)
+add_compile_definitions($<$<CONFIG:RelWithDebInfo>:_FORTIFY_SOURCE=3>)
 
 # Find Threads library
 find_package(Threads REQUIRED)

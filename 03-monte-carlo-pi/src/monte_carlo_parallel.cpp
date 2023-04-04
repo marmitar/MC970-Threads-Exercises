@@ -1,6 +1,9 @@
+#include <algorithm>
+#include <array>
 #include <iostream>
 #include <random>
 #include <sstream>
+#include <thread>
 
 // Function to generate random numbers between -1 and 1
 static double random_number() {
@@ -33,10 +36,15 @@ int main() {
 
     int count = 0;
     int n_points = 0;
+    std::array<std::thread, NUM_THREADS> threads;
 
-    for (int i = 0; i < NUM_THREADS; ++i) {
-        calculate_pi(count, n_points, num_iterations / NUM_THREADS);
-    }
+    std::for_each(threads.begin(), threads.end(), [&](std::thread &thread) {
+        thread = std::thread(calculate_pi, std::ref(count), std::ref(n_points), num_iterations / NUM_THREADS);
+    });
+    std::for_each(threads.begin(), threads.end(), [](std::thread &thread) {
+        thread.join();
+    });
+
 
     std::cout << "count: " << count << " of " << n_points << std::endl;
     double pi = 4.0 * (double)count / (double)num_iterations;

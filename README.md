@@ -14,7 +14,7 @@ The exercises are designed to be completed in order, as each exercise builds upo
 To get started, clone this repository to your local machine using the following command:
 
 ```sh
-git clone <repository URL>
+git clone git@github.com:mc970-1s23/threads-exercises-TiagodePAlves.git
 ```
 
 Once the repository is cloned, navigate to the first exercise folder and read the instructions in the README file. Follow the instructions to complete the exercise, and then move on to the next exercise in the sequence.
@@ -22,6 +22,10 @@ Once the repository is cloned, navigate to the first exercise folder and read th
 ## Prerequisites
 
 To complete these exercises, you will need a basic understanding of threads programming and the programming language used in the exercises (C or C++). You will also need a development environment for the language used in the exercises, as well as any necessary libraries or tools.
+
+## Solutions and Answers
+
+Solutions were made and tested in the hardware described in [MACHINE.md](MACHINE.md).
 
 ## Contributing
 

@@ -13,7 +13,6 @@
 void *sum(void *p);
 
 // global shared variables
-unsigned long int psum[MAXTHREADS]; // partial sum computed by each thread
 unsigned long int sumtotal = 0;
 unsigned long int n;
 unsigned long numthreads;
@@ -40,7 +39,6 @@ int main(int argc, char **argv) {
     unsigned long myid[MAXTHREADS];
     for (unsigned long i = 0; i < numthreads; i++) {
         myid[i] = i;
-        psum[i] = 0L;
         int rv = pthread_create(&tid[i], NULL, sum, &myid[i]);
         if (rv != 0) {
             return EXIT_FAILURE;
@@ -83,13 +81,14 @@ void *sum(void *p) {
     unsigned long start = (myid * n) / numthreads;
     unsigned long end = ((myid + 1) * n) / numthreads;
 
+    unsigned long psum = 0L;
     for (unsigned long i = start; i < end; i++) {
-        psum[myid] += step();
+        psum += step();
     }
 
     int rv = pthread_mutex_lock(&mutex);
     if (rv == 0) {
-        sumtotal += psum[myid];
+        sumtotal += psum;
         pthread_mutex_unlock(&mutex);
     }
     return NULL;

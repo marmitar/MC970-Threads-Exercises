@@ -1,4 +1,4 @@
-#include <pthread.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -6,28 +6,28 @@
 #define NUM_THREADS 5
 
 // Print hello world from a thread
-void *printHello(void *threadId) {
-    long tid = (long)threadId;
+static void *printHello(void *threadId) {
+    unsigned tid = (unsigned) (uintptr_t) threadId;
 
-    printf("Hello Worlds from thread #%ld!\n", tid);
+    printf("Hello Worlds from thread #%u!\n", tid);
 
     // Pause for 3 seconds
     sleep(3);
 
-    printf("Goodbye from thread #%ld!\n", tid);
+    printf("Goodbye from thread #%u!\n", tid);
 
     return NULL;
 }
 
-int main() {
-    long t;
-
-    for (t = 0; t < NUM_THREADS; t++) {
-        printf("Creating thread #%ld\n", t);
-        printHello((void *)t);
+int main(void) {
+    for (unsigned t = 0; t < NUM_THREADS; t++) {
+        printf("Creating thread #%u\n", t);
+        printHello((void *) (uintptr_t) t);
     }
 
     // Wait for all threads to finish
-    for (t = 0; t < NUM_THREADS; t++) {
+    for (unsigned t = 0; t < NUM_THREADS; t++) {
     }
+
+    return EXIT_SUCCESS;
 }

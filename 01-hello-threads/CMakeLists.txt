@@ -6,12 +6,12 @@ if (NOT CMAKE_BUILD_TYPE OR CMAKE_BUILD_TYPE STREQUAL "")
     set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Build Configuration" FORCE)
 endif()
 
+# Set C standard to C11
+set(CMAKE_C_STANDARD 11)
+
 # Enable Link Time Optimizations
 set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_RELEASE TRUE CACHE BOOL "Enable LTO in Release")
 set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_RELWITHDEBINFO TRUE CACHE BOOL "Enable LTO in RelWithDebInfo")
-
-# Set compiler flags
-add_compile_options(-pthread)
 
 # 1 if the GCC is the current compiler
 set(GCC $<C_COMPILER_ID:GNU>)
@@ -38,13 +38,17 @@ if (EMIT_OPTIMIZATION_REPORTS)
     add_compile_options(-Rpass=.* -Rpass-analysis=.* -Rpass-missed=.* -fsave-optimization-record)
 endif()
 
+# Find Threads library
+set(THREADS_PREFER_PTHREAD_FLAG TRUE)
+find_package(Threads REQUIRED)
+
 # Create executable
 add_executable(hello_threads src/hello_threads.c)
 add_executable(hello_threads_solution src/hello_threads_solution.c)
 
 # Link pthreads library
-target_link_libraries(hello_threads pthread )
-target_link_libraries(hello_threads_solution pthread )
+target_link_libraries(hello_threads PRIVATE Threads::Threads)
+target_link_libraries(hello_threads_solution PRIVATE Threads::Threads)
 
 
 if (EMIT_OPTIMIZATION_REPORTS)

@@ -1,6 +1,11 @@
 cmake_minimum_required(VERSION 3.12)
 project(monte_carlo_pi CXX)
 
+# If build type is unspecified, default to Release
+if (NOT CMAKE_BUILD_TYPE OR CMAKE_BUILD_TYPE STREQUAL "")
+    set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Build Configuration" FORCE)
+endif()
+
 # Set C++ standard to C++11
 set(CMAKE_CXX_STANDARD 11)
 

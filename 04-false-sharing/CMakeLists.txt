@@ -1,6 +1,11 @@
 cmake_minimum_required(VERSION 3.12)
 project(sum-scalar C)
 
+# If build type is unspecified, default to Release
+if (NOT CMAKE_BUILD_TYPE OR CMAKE_BUILD_TYPE STREQUAL "")
+    set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Build Configuration" FORCE)
+endif()
+
 # Set compiler flags
 add_compile_options(-pthread)
 

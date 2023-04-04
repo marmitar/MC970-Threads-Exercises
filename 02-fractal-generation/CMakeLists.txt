@@ -1,8 +1,13 @@
 cmake_minimum_required(VERSION 3.12)
 project(mandelbrot CXX)
 
+# If build type is unspecified, default to Release
+if (NOT CMAKE_BUILD_TYPE OR CMAKE_BUILD_TYPE STREQUAL "")
+    set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Build Configuration" FORCE)
+endif()
+
 set(CMAKE_CXX_STANDARD 11)
-add_compile_options(-m64 $<$<CONFIG:RELEASE>:-O3> -fPIC)
+add_compile_options(-m64 -fPIC)
 
 # 1 if the GCC is the current compiler
 set(GCC $<CXX_COMPILER_ID:GNU>)

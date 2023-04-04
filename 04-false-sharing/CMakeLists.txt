@@ -38,6 +38,10 @@ if (EMIT_OPTIMIZATION_REPORTS)
     add_compile_options(-Rpass=.* -Rpass-analysis=.* -Rpass-missed=.* -fsave-optimization-record)
 endif()
 
+# Set number of threads for the solution
+set(MAXTHREADS "8" CACHE STRING "Maximum number of threads in concurrent program")
+add_compile_definitions(MAXTHREADS=${MAXTHREADS})
+
 # Find Threads library
 set(THREADS_PREFER_PTHREAD_FLAG TRUE)
 find_package(Threads REQUIRED)

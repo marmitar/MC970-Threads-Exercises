@@ -9,7 +9,6 @@
 #include <stdlib.h>
 #include <sys/time.h>
 
-#define MAXTHREADS 8
 
 void *sum(void *p);
 

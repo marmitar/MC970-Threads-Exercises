@@ -29,6 +29,15 @@ add_compile_options(
 add_compile_definitions($<$<CONFIG:Release>:_FORTIFY_SOURCE=1>)
 add_compile_definitions($<$<CONFIG:RelWithDebInfo>:_FORTIFY_SOURCE=3>)
 
+# Let the compiler emit reports about optimizations done and missed
+set(EMIT_OPTIMIZATION_REPORTS OFF CACHE BOOL "Emit LLVM IR optimization reports")
+if (EMIT_OPTIMIZATION_REPORTS)
+    if (NOT CMAKE_C_COMPILER_ID MATCHES "Clang")
+        message(FATAL_ERROR "Clang is required for optimization reports")
+    endif()
+    add_compile_options(-Rpass=.* -Rpass-analysis=.* -Rpass-missed=.* -fsave-optimization-record)
+endif()
+
 # Create executable
 add_executable(sum_scalar src/sum_scalar.c)
 add_executable(sum_scalar_solution src/sum_scalar_solution.c)
@@ -36,3 +45,13 @@ add_executable(sum_scalar_solution src/sum_scalar_solution.c)
 # Link pthreads library
 target_link_libraries(sum_scalar pthread)
 target_link_libraries(sum_scalar_solution pthread)
+
+
+if (EMIT_OPTIMIZATION_REPORTS)
+    # Copy the optimization reports to the build directory
+    add_custom_target(sum-scalar_report ALL
+        cp CMakeFiles/*.dir/src/*.opt.yaml .
+        DEPENDS sum_scalar sum_scalar_solution
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+    )
+endif()

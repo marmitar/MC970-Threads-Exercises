@@ -29,6 +29,15 @@ add_compile_options(
 add_compile_definitions($<$<CONFIG:Release>:_FORTIFY_SOURCE=1>)
 add_compile_definitions($<$<CONFIG:RelWithDebInfo>:_FORTIFY_SOURCE=3>)
 
+# Let the compiler emit reports about optimizations done and missed
+set(EMIT_OPTIMIZATION_REPORTS OFF CACHE BOOL "Emit LLVM IR optimization reports")
+if (EMIT_OPTIMIZATION_REPORTS)
+    if (NOT CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+        message(FATAL_ERROR "Clang is required for optimization reports")
+    endif()
+    add_compile_options(-Rpass=.* -Rpass-analysis=.* -Rpass-missed=.* -fsave-optimization-record)
+endif()
+
 set(APP_NAME mandelbrot)
 set(OBJDIR src)
 
@@ -45,3 +54,13 @@ target_sources(${APP_NAME}
 )
 
 target_link_libraries(${APP_NAME} PRIVATE pthread m)
+
+
+if (EMIT_OPTIMIZATION_REPORTS)
+    # Copy the optimization reports to the build directory
+    add_custom_target(mandelbrot_report ALL
+        cp CMakeFiles/*.dir/src/*.opt.yaml .
+        DEPENDS ${PROJECT_NAME}
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+    )
+endif()

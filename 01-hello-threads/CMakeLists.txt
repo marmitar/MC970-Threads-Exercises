@@ -29,6 +29,15 @@ add_compile_options(
 add_compile_definitions($<$<CONFIG:Release>:_FORTIFY_SOURCE=1>)
 add_compile_definitions($<$<CONFIG:RelWithDebInfo>:_FORTIFY_SOURCE=3>)
 
+# Let the compiler emit reports about optimizations done and missed
+set(EMIT_OPTIMIZATION_REPORTS OFF CACHE BOOL "Emit LLVM IR optimization reports")
+if (EMIT_OPTIMIZATION_REPORTS)
+    if (NOT CMAKE_C_COMPILER_ID MATCHES "Clang")
+        message(FATAL_ERROR "Clang is required for optimization reports")
+    endif()
+    add_compile_options(-Rpass=.* -Rpass-analysis=.* -Rpass-missed=.* -fsave-optimization-record)
+endif()
+
 # Create executable
 add_executable(hello_threads src/hello_threads.c)
 add_executable(hello_threads_solution src/hello_threads_solution.c)
@@ -36,3 +45,13 @@ add_executable(hello_threads_solution src/hello_threads_solution.c)
 # Link pthreads library
 target_link_libraries(hello_threads pthread )
 target_link_libraries(hello_threads_solution pthread )
+
+
+if (EMIT_OPTIMIZATION_REPORTS)
+    # Copy the optimization reports to the build directory
+    add_custom_target(hello_threads_report ALL
+        cp CMakeFiles/*.dir/src/*.opt.yaml .
+        DEPENDS hello_threads hello_threads_solution
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+    )
+endif()

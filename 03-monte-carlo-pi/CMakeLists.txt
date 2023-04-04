@@ -29,6 +29,15 @@ add_compile_options(
 add_compile_definitions($<$<CONFIG:Release>:_FORTIFY_SOURCE=1>)
 add_compile_definitions($<$<CONFIG:RelWithDebInfo>:_FORTIFY_SOURCE=3>)
 
+# Let the compiler emit reports about optimizations done and missed
+set(EMIT_OPTIMIZATION_REPORTS OFF CACHE BOOL "Emit LLVM IR optimization reports")
+if (EMIT_OPTIMIZATION_REPORTS)
+    if (NOT CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+        message(FATAL_ERROR "Clang is required for optimization reports")
+    endif()
+    add_compile_options(-Rpass=.* -Rpass-analysis=.* -Rpass-missed=.* -fsave-optimization-record)
+endif()
+
 # Find Threads library
 find_package(Threads REQUIRED)
 
@@ -42,3 +51,13 @@ target_compile_definitions(monte_carlo_parallel PRIVATE PARALLEL_VERSION)
 
 # Link with Threads library
 target_link_libraries(monte_carlo_parallel Threads::Threads)
+
+
+if (EMIT_OPTIMIZATION_REPORTS)
+    # Copy the optimization reports to the build directory
+    add_custom_target(monte_carlo_pi_report ALL
+        cp CMakeFiles/*.dir/src/*.opt.yaml .
+        DEPENDS monte_carlo_serial monte_carlo_parallel
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+    )
+endif()

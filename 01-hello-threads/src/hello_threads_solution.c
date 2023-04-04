@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <pthread.h>
 #include <unistd.h>
 
 
@@ -19,13 +20,19 @@ static void *printHello(void *threadId) {
 }
 
 int main(void) {
+    pthread_t id[NUM_THREADS];
+
     for (unsigned t = 0; t < NUM_THREADS; t++) {
         printf("Creating thread #%u\n", t);
-        printHello((void *) (uintptr_t) t);
+        int rv = pthread_create(&id[t], NULL, printHello, (void *) (uintptr_t) t);
+        if (rv != 0) {
+            return EXIT_FAILURE;
+        }
     }
 
     // Wait for all threads to finish
     for (unsigned t = 0; t < NUM_THREADS; t++) {
+        pthread_join(id[t], NULL);
     }
 
     return EXIT_SUCCESS;

@@ -13,20 +13,18 @@ The code for this lab is already parallelized with pthreads. However, it suffers
 After cloning the repository, run:
 
 ```sh
- mkdir build
- cd build
- cmake ..
- make
+cmake -B build .
+make -C build
 ```
 
-This will create the executables in the build folder. To compile again, simply run `make`.
+This will create the executables in the build folder. To compile again, simply run `make -C build`.
 
 The code is to be executed with the following arguments:
 
 ```sh
-./sum_scalar <n> <num_threads>
-./sum_scalar 100000000 4
-./sum_scalar 3000000 4
+build/sum_scalar <n> <num_threads>
+build/sum_scalar 100000000 4
+build/sum_scalar 3000000 4
 ```
 
 ## What you need to do

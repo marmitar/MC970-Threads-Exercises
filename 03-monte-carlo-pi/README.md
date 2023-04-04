@@ -21,19 +21,17 @@ If you are curious, you can check how this method works in this [Wikipedia artic
 After cloning the repository, run:
 
 ```sh
- mkdir build
- cd build
- cmake ..
- make
+cmake -B build .
+make -C build
 ```
 
-This will create the executables in the build folder. To compile again, simply run `make`.
+This will create the executables in the build folder. To compile again, simply run `make -C build`.
 
 To run the code simply execute:
 
 ```sh
-./monte_carlo_serial
-./monte_carlo_parallel
+build/monte_carlo_serial
+build/monte_carlo_parallel
 ```
 
 ## What you need to do

@@ -15,16 +15,14 @@ CMake is a tool that automates the build process. Check the CMakeLists.txt file 
 To build the program, run the following commands:
 
 ```sh
-mkdir build
-cd build
-cmake ..
-make
+cmake -B build .
+make -C build
 ```
 
 After building the program, you can run it with the following command:
 
 ```sh
-./mandelbrot
+build/mandelbrot
 ```
 
 And, of course, you can open the generated .PPM image to see what your program generated!

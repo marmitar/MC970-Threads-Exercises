@@ -15,13 +15,11 @@ CMake is a tool that automates the build processes. Check the `CMakeLists.txt` f
 After cloning the repository, run:
 
 ```sh
- mkdir build
- cd build
- cmake ..
- make
+cmake -B build .
+make -C build
 ```
 
-This will create the executables in the build folder. To compile again, simply run `make`.
+This will create the executables in the build folder. To compile again, simply run `make -C build`.
 
 ## Code Overview
 

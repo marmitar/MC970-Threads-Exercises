@@ -17,14 +17,11 @@ void *sum(void *p);
 unsigned long int psum[MAXTHREADS]; // partial sum computed by each thread
 unsigned long int sumtotal = 0;
 unsigned long int n;
-int numthreads;
+unsigned long numthreads;
 pthread_mutex_t mutex;
 
 int main(int argc, char **argv) {
-    pthread_t tid[MAXTHREADS];
-    int i, myid[MAXTHREADS];
     struct timeval start, end;
-
     gettimeofday(&start, NULL); /* start timing */
 
     if (argc != 3) {
@@ -33,15 +30,17 @@ int main(int argc, char **argv) {
     }
 
     n = strtoul(argv[1], NULL, 10);
-    numthreads = (int)strtoul(argv[2], NULL, 10);
+    numthreads = strtoul(argv[2], NULL, 10);
 
-    for (i = 0; i < numthreads; i++) {
+    pthread_t tid[MAXTHREADS];
+    unsigned long myid[MAXTHREADS];
+    for (unsigned long i = 0; i < numthreads; i++) {
         myid[i] = i;
-        psum[i] = 0.0;
+        psum[i] = 0L;
         pthread_create(&tid[i], NULL, sum, &myid[i]);
     }
 
-    for (i = 0; i < numthreads; i++) {
+    for (unsigned long i = 0; i < numthreads; i++) {
         pthread_join(tid[i], NULL);
     }
 
@@ -56,12 +55,11 @@ int main(int argc, char **argv) {
 }
 
 void *sum(void *p) {
-    int myid = *((int *)p);
-    unsigned long int start = (myid * (unsigned long int)n) / numthreads;
-    unsigned long int end = ((myid + 1) * (unsigned long int)n) / numthreads;
-    unsigned long int i;
+    unsigned long myid = *(unsigned long *) p;
+    unsigned long start = (myid * n) / numthreads;
+    unsigned long end = ((myid + 1) * n) / numthreads;
 
-    for (i = start; i < end; i++) {
+    for (unsigned long i = start; i < end; i++) {
         psum[myid] += 2;
     }
 

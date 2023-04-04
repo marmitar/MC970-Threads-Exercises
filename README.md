@@ -29,6 +29,7 @@ Solutions were made and tested in the hardware described in [MACHINE.md](MACHINE
 
 1. [Hello Threads](01-hello-threads/SOLUTION.md).
 2. [Fractal Generation](02-fractal-generation/SOLUTION.md).
+3. [Monte Carlo Pi](03-monte-carlo-pi/SOLUTION.md).
 
 ## Contributing
 

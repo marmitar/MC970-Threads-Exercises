@@ -43,3 +43,7 @@ Try to answer the following questions:
  1. What is the optimal number of threads to use on your computer?
  2. How does the accuracy of the approximation change with the number of threads?
  3. Is there any race condition on the resulting data?
+
+## Solution and Answers
+
+Can be found at [SOLUTION.md](SOLUTION.md).

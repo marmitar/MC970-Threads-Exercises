@@ -1,6 +1,6 @@
-#include <cassert>
 #include <iostream>
 #include <random>
+#include <sstream>
 
 // Function to generate random numbers between -1 and 1
 double random_number() {
@@ -44,6 +44,12 @@ int main() {
     std::cout << "Used " << n_points << " points to estimate pi: " << pi
                         << std::endl;
 
-    assert(n_points = num_iterations);
+    if (n_points != num_iterations) {
+        std::stringstream message;
+        message << "Error: number of computed points (" << n_points << ") does not"
+            << " match the expected number of iterations (" << num_iterations << ")";
+        throw std::logic_error(message.str());
+    }
+
     return 0;
 }
